@@ -1,5 +1,5 @@
 import User from '../../../../models/User.js'
-import { DatabaseConnection } from '../../../database/database'
+import { DatabaseConnection } from '../../../database/database.js'
 
 
 export const allUsers = async (req, res) => {
@@ -19,3 +19,31 @@ export const allUsers = async (req, res) => {
         })
     }
 }
+
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+
+export const addUser = async (req, res) => {
+    try {
+        console.log("req of add users --------->", req.body);
+
+        const newUser = await User.create(
+            {
+                name: req.body.name,
+                age: req.body.age,
+                email: req.body.email,
+            }
+        );
+
+        res.status(201).json(newUser);
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
+}
+
+
