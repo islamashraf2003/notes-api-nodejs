@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/jwt.js";
 
 /**
  * Verifies the sign-in credentials and attaches a signed token to the request
@@ -35,7 +36,7 @@ export const validateSignIn = async (req, res, next) => {
 
         const token = jwt.sign(
             { userId: user._id },
-            "sssss"
+            JWT_SECRET
         );
 
         req.token = token;

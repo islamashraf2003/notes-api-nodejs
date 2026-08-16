@@ -31,7 +31,7 @@ export const addNote = async (req, res, next) => {
         const newNote = await Notes.create({
             title,
             description,
-            createdBy: req.params.id,
+            createdBy: req.user.id,
         })
         return res.status(201).json({
             message: "Note added successfully",
@@ -60,7 +60,12 @@ export const addNote = async (req, res, next) => {
  */
 export const deleteNote = async (req, res, next) => {
     try {
-        const deletedNote = await Notes.findByIdAndDelete(req.params.id);
+        // Scoped to the caller, so someone else's note reads as "not found"
+        // rather than telling an attacker which ids exist.
+        const deletedNote = await Notes.findOneAndDelete({
+            _id: req.params.id,
+            createdBy: req.user.id,
+        });
 
         if (!deletedNote) {
             return res.status(404).json({
