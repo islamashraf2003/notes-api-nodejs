@@ -13,10 +13,12 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
     },
-    age: {
-        type: Number,
-        min: 0,
-    },
-}, { timestamps: true })
+    isConfirmed: {
+        type: Boolean,
+        required: true,
+        default: false,
+    }
+
+}, { timestamps: true, versionKey: false })
 
 export default mongoose.model('User', userSchema)
