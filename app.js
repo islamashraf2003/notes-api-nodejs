@@ -15,7 +15,11 @@ app.use((error, req, res, next) => {
         });
     }
 
-    next(error);
+    console.error(error);
+    return res.status(error.status || 500).json({
+        success: false,
+        message: "internal server error",
+    });
 });
 DatabaseConnection().then(() => {
     app.listen(port, () => console.log(`Example app listening on port ${port}!`))

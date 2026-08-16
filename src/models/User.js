@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
     },
+    password: {
+        type: String,
+        required: true,
+        select: false,
+    },
     isConfirmed: {
         type: Boolean,
         required: true,

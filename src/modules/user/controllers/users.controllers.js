@@ -4,25 +4,33 @@ import bcrypt from "bcrypt";
 /**
  * @param {import('express').Request} req
  * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
-export const signUp = async (req, res) => {
+export const signUp = async (req, res, next) => {
     try {
-        const newUser = await User.findOne({ email: req.body.email })
-        console.log(newUser);
-        if (newUser) {
-            return res.status(401).json({
-                message: 'sorry.. user exist!!',
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                message: "name, email and password are required",
             })
-        } else {
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-            const newUser = await User.create(req.body);
-            req.body.password = undefined;
-            res.status(201).json({ message: "added successfully", data: req.body })
-
         }
-        console.log(req.body);
-    } catch (error) {
-        console.log(error)
 
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await User.create({ name, email, password: hashedPassword });
+
+        return res.status(201).json({
+            message: "added successfully",
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isConfirmed: user.isConfirmed,
+            },
+        })
+    } catch (error) {
+        if (error.code === 11000) {
+            return res.status(409).json({ message: "sorry.. user exist!!" })
+        }
+        return next(error);
     }
 }
