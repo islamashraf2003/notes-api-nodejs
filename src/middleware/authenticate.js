@@ -28,9 +28,7 @@ export const authenticate = (req, res, next) => {
 
     try {
         const payload = jwt.verify(token, JWT_SECRET);
-
         req.user = { id: payload.userId };
-
         return next();
     } catch (error) {
         if (error.name === "TokenExpiredError") {
@@ -38,7 +36,6 @@ export const authenticate = (req, res, next) => {
                 message: "Token has expired, please sign in again",
             });
         }
-
         return res.status(401).json({
             message: "Invalid token",
         });
