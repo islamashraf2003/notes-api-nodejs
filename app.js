@@ -10,6 +10,13 @@ const port = 3000
 app.use('/users', userRoute)
 app.use('/note', noteRoute)
 
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "the api not exist",
+    })
+})
+
 app.use((error, req, res, next) => {
     if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
         return res.status(400).json({
@@ -24,6 +31,7 @@ app.use((error, req, res, next) => {
         message: "Something went wrong, please try again later",
     });
 });
+
 DatabaseConnection().then(() => {
     app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 })
