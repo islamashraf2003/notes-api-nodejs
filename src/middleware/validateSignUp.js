@@ -2,12 +2,6 @@ const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 const MIN_PASSWORD_LENGTH = 8;
 
 /**
- * Validates the sign-up body before the request reaches the database, and
- * normalises the fields the model indexes on (trimmed name, lower-cased email)
- * so the unique constraint sees a canonical value.
- *
- * Every failure is reported through the same `errors` map, keyed by field.
- *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next

@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../config/jwt.js";
+import { JWT_SECRET } from "../config/env.js";
 
 /**
- * Reads the bearer token from the Authorization header, verifies it, and puts
- * the caller on `req.user` so controllers never have to trust a client-supplied id.
- *
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next

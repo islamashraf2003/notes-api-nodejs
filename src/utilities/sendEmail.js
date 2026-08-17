@@ -1,13 +1,10 @@
 import nodemailer from "nodemailer";
-import { EMAIL_USER, EMAIL_PASSWORD, EMAIL_FROM } from "../config/email.js";
+import { EMAIL_USER, EMAIL_PASSWORD, EMAIL_FROM } from "../config/env.js";
 import emailTemplate from "./emailTemplate.js";
 
 let transporter;
 
 /**
- * Creates the transporter on first use and reuses it afterwards, so we don't
- * open a new connection pool on every send.
- *
  * @returns {import('nodemailer').Transporter}
  */
 const getTransporter = () => {
@@ -20,8 +17,8 @@ const getTransporter = () => {
     transporter ??= nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "islamashraf520.dev@gmail.com",
-            pass: "wpvc ifxl fmur vpfc",
+            user: EMAIL_USER,
+            pass: EMAIL_PASSWORD,
         },
     });
 
@@ -29,9 +26,6 @@ const getTransporter = () => {
 };
 
 /**
- * Sends one email. Rejects if the message is incomplete or the SMTP send
- * fails, so callers can forward the error to the express error handler.
- *
  * @param {object} options
  * @param {string | string[]} options.to - Recipient address(es).
  * @param {string} options.subject
@@ -54,9 +48,6 @@ export default async function sendEmail({ to, subject, text, html }) {
 }
 
 /**
- * Sends the welcome email that goes out after sign-up. The subject and body are
- * fixed here so callers only have to supply who it goes to.
- *
  * @param {object} options
  * @param {string} options.email - Recipient address.
  * @param {string} options.name - Recipient's name, used in the greeting.
@@ -74,8 +65,6 @@ export const sendWelcomeEmail = async ({ email, name }) =>
     });
 
 /**
- * Checks the SMTP credentials without sending anything. Useful on startup.
- *
  * @returns {Promise<true>}
  */
 export const verifyEmailConnection = async () => await getTransporter().verify();

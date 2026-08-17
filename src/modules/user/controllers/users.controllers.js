@@ -1,8 +1,9 @@
-import mongoose from "mongoose";
-import User from "../../../models/User.js"
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import User from "../../../models/User.js";
+import { EMAIL_ENABLED } from "../../../config/env.js";
 import { sendWelcomeEmail } from "../../../utilities/sendEmail.js";
+
+const BCRYPT_ROUNDS = 10;
 
 /**
  * @param {import('express').Request} req
@@ -12,12 +13,14 @@ import { sendWelcomeEmail } from "../../../utilities/sendEmail.js";
 export const signUp = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
         const user = await User.create({ name, email, password: hashedPassword });
-        sendWelcomeEmail({
-            email: user.email,
-            name: user.name,
-        }).catch((error) => console.error("Failed to send welcome email:", error.message));
+
+        if (EMAIL_ENABLED) {
+            sendWelcomeEmail({ email: user.email, name: user.name }).catch(
+                (error) => console.error("Failed to send welcome email:", error.message)
+            );
+        }
 
         return res.status(201).json({
             message: "Account created successfully",
@@ -27,31 +30,23 @@ export const signUp = async (req, res, next) => {
                 email: user.email,
                 isConfirmed: user.isConfirmed,
             },
-        })
+        });
     } catch (error) {
         if (error.code === 11000) {
             return res.status(409).json({
                 message: "An account with this email already exists",
-            })
+            });
         }
-        return next(error);
-    }
-}
-
-/**
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
-export const signIn = async (req, res, next) => {
-    try {
-        return res.status(200).json({
-            message: "Welcome",
-            token: req.token,
-        });
-
-    } catch (error) {
         return next(error);
     }
 };
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+export const signIn = (req, res) =>
+    res.status(200).json({
+        message: "Signed in successfully",
+        token: req.token,
+    });

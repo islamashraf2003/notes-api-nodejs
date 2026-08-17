@@ -1,15 +1,31 @@
 {
   "name": "mongoose-playground",
   "version": "1.0.0",
+  "description": "A small Express 5 + Mongoose 9 REST API with JWT auth, showing a layered, module-based backend structure.",
   "main": "app.js",
   "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "node": ">=20.6.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "mongodb",
+    "jwt",
+    "rest-api",
+    "nodejs"
+  ],
+  "author": "Islam Ashraf",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/islamashraf2003/mongoose-playground.git"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",

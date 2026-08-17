@@ -1,7 +1,4 @@
 /**
- * Escapes text that gets interpolated into the HTML template so a value
- * like a user's name can't break the markup.
- *
  * @param {unknown} value
  * @returns {string}
  */
@@ -14,16 +11,10 @@ const escapeHtml = (value) =>
         .replaceAll("'", "&#39;");
 
 /**
- * Builds the HTML body of an email.
- *
- * Uses a table layout with inline styles because most email clients strip
- * <style> blocks and have poor flexbox support.
- *
  * @param {object} options
  * @param {string} options.title - Main heading, e.g. "Confirm your email".
  * @param {string} options.message - Body text shown under the heading.
  * @param {string} [options.buttonText] - Label of the call-to-action button.
- *   The button is only rendered when both buttonText and buttonUrl are given.
  * @param {string} [options.buttonUrl] - URL the button points to.
  * @param {string} [options.footer] - Small print under the divider.
  * @returns {string} A complete HTML document.

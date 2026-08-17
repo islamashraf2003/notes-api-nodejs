@@ -1,5 +1,13 @@
 # Architecture
 
+> **Status: target design, not the current layout.** This document describes
+> where the project is headed — an app factory, a service layer, `src/server.js`
+> as the entry point. The code today is a simpler subset of it: `app.js` at the
+> root, and controllers that talk to models directly.
+>
+> For the structure that actually exists right now, see the
+> [project structure section of the README](README.md#project-structure).
+
 A layered, module-based structure for this Express 5 + Mongoose 9 API.
 
 Two ideas carry the whole design:
