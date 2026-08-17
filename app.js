@@ -3,6 +3,7 @@ import express from 'express'
 import { DatabaseConnection } from './src/database/database.js'
 import userRoute from './src/modules/user/routes/users.routs.js'
 import noteRoute from './src/modules/nots/routes/note.routs.js'
+import AppError from './src/utilities/appError.js'
 const app = express()
 app.use(express.json())
 const port = 3000
@@ -11,7 +12,7 @@ app.use('/users', userRoute)
 app.use('/note', noteRoute)
 
 app.use((req, res, next) => {
-    next(new Error('invalid url'))
+    next(new AppError("invaid URL", 422))
 })
 
 app.use((error, req, res, next) => {
