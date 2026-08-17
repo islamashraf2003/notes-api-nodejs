@@ -10,11 +10,8 @@ const port = 3000
 app.use('/users', userRoute)
 app.use('/note', noteRoute)
 
-app.use((req, res) => {
-    res.status(404).json({
-        success: false,
-        message: "the api not exist",
-    })
+app.use((req, res, next) => {
+    next(new Error('invalid url'))
 })
 
 app.use((error, req, res, next) => {
@@ -27,8 +24,8 @@ app.use((error, req, res, next) => {
 
     console.error(error);
     return res.status(error.status || 500).json({
-        success: false,
-        message: "Something went wrong, please try again later",
+        message: "Error",
+        error: error.message,
     });
 });
 
