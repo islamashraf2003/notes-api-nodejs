@@ -1,4 +1,4 @@
-import Notes from "../../../models/Notes.js";
+import Notes from "../../../models/Note.js";
 
 /**
  * @param {import('express').Request} req
